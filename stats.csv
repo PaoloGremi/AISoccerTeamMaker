@@ -1,0 +1,52 @@
+playerId,playerName,role,gamesPlayed,votesReceived,avgVote,bestVote,worstVote
+p38,Abro,D,3,3,7.17,8.0,6.5
+p09,Ago,C,0,0,0.00,,
+p41,Alberto Salvaderi,C,1,1,7.50,7.5,7.5
+p25,Ale Ferro,C,7,7,7.57,8.0,6.5
+p24,Alli Ferro,C,7,7,6.29,7.5,5.0
+p46,Altert,D,1,1,8.50,8.5,8.5
+p49,amico Francesco,C,1,1,8.50,8.5,8.5
+p47,amico Mattia,C,1,1,7.00,7.0,7.0
+p51,amico Mora,D,0,0,0.00,,
+p45,amico Norry,C,2,2,6.75,7.5,6.0
+p39,Andrea Palmi,A,2,2,7.00,7.5,6.5
+p19,Bruno,D,1,1,6.50,6.5,6.5
+p48,Bruno Luca,C,1,1,8.00,8.0,8.0
+p10,Cesare,A,1,1,7.50,7.5,7.5
+p21,Clinton,C,6,6,6.92,8.0,6.5
+p08,Daniele,D,3,3,7.50,7.5,7.5
+p11,Danielinho,C,0,0,0.00,,
+p16,Davide,C,8,8,7.94,8.5,7.0
+p17,Demi,C,8,8,6.88,7.5,5.5
+p37,Enrico Ama,D,1,1,7.00,7.0,7.0
+p07,Flavio,D,0,0,0.00,,
+p34,Francesco,C,5,5,7.50,8.0,7.0
+p27,Gabriel,C,2,2,7.50,8.0,7.0
+p32,Gianni,P,1,1,9.00,9.0,9.0
+p12,Gigi,D,0,0,0.00,,
+p33,Gionni,D,2,2,7.25,7.5,7.0
+p15,Ivan,D,4,4,6.75,7.5,6.0
+p03,Jack,A,13,13,7.73,9.0,7.0
+p40,Luca Pergola,C,1,1,7.00,7.0,7.0
+p05,Lucio,A,3,3,6.33,6.5,6.0
+p31,Luigi,D,3,3,7.50,8.0,7.0
+p29,Marco Espo,D,1,1,9.00,9.0,9.0
+p43,Martino,C,1,1,8.50,8.5,8.5
+p23,Matteo Lupo,D,4,4,7.25,8.0,6.5
+p35,Mattia,A,3,3,8.00,8.5,7.5
+p04,Max,D,3,3,6.83,7.5,6.5
+p44,Micheal,C,3,3,8.50,8.5,8.5
+p26,Mora,D,4,4,8.13,9.0,7.5
+p36,Nick Clinton,C,1,1,7.00,7.0,7.0
+p01,Niko,P,1,1,8.00,8.0,8.0
+p28,Norry,A,8,8,7.19,8.5,5.5
+p13,Oliver,C,2,2,8.00,8.5,7.5
+p14,Pablo,D,5,5,6.80,8.5,4.0
+p02,Paul,C,1,1,8.50,8.5,8.5
+p30,Rino,D,3,3,6.67,7.5,6.0
+p18,Robi,A,4,4,7.75,8.0,7.5
+p42,Samu,D,0,0,0.00,,
+p50,Samu,C,0,0,0.00,,
+p20,Shubi,D,3,3,7.00,7.5,6.5
+p06,Stefano,C,1,1,7.50,7.5,7.5
+p22,Yax,D,2,2,7.00,7.0,7.0
