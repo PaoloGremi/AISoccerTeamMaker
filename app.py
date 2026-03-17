@@ -250,6 +250,8 @@ if st.button("⚽ Genera Squadre"):
     prompt = f"""Sei un commentatore sportivo di calcetto amatoriale.
 Ti vengono fornite due squadre generate automaticamente da un algoritmo di bilanciamento.
 Per ogni giocatore ricevi:
+nome
+ruolo(A=attaccante, C=centrocampista, D=difensore e P=portiere)
 media voti
 record vittorie/pareggi/sconfitte
 numero di premi MVP e Hustle
@@ -270,7 +272,7 @@ SQUADRA COLORATA (🔵):
 
 Differenza di forza tra le squadre: {diff_display}
 """
-
+    print(prompt)
     st.divider()
     st.subheader("🎙️ Commento AI")
 
