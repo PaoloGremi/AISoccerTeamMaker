@@ -1,113 +1,143 @@
-# ⚽ AI Squad Maker
+# ⚽ Generatore di Squadre con AI
 
-> Divide un gruppo di giocatori in due squadre equilibrate usando Machine Learning locale.
-
----
-
-## 📋 Descrizione
-
-AI Squad Maker analizza i dati storici delle partite (voti, presenze, performance) e allena un modello ML per calcolare la forza di ogni giocatore. Selezionati i presenti della serata, l'algoritmo trova la divisione ottimale bilanciando livello individuale e ruoli in campo. Tutto gira in locale — nessun dato inviato online.
+Applicazione web per generare squadre di calcetto bilanciate usando un modello di Machine Learning (Random Forest). L'AI analizza le statistiche dei giocatori e divide automaticamente il gruppo in due squadre equilibrate per ruolo e punteggio.
 
 ---
 
-## 🗂 Struttura dei file
-
-```
-AIsquadreMaker/
-├── app.py
-├── players.csv
-├── stats.csv
-└── matches.csv
-```
-
-### players.csv
-| Campo | Tipo | Descrizione |
-|---|---|---|
-| `id` | string | ID univoco del giocatore (es. `p01`) |
-| `name` | string | Nome del giocatore |
-| `role` | string | Ruolo: `P`, `D`, `C`, `A` |
-| `icon` | string | Nome icona |
-| `imagePath` | string | Percorso immagine profilo |
-
-### stats.csv
-| Campo | Tipo | Descrizione |
-|---|---|---|
-| `playerId` | string | Riferimento a `players.id` |
-| `playerName` | string | Nome del giocatore |
-| `role` | string | Ruolo |
-| `gamesPlayed` | int | Partite giocate |
-| `votesReceived` | int | Voti ricevuti |
-| `avgVote` | float | Media voti |
-| `bestVote` | float | Voto migliore |
-| `worstVote` | float | Voto peggiore |
-
-### matches.csv
-| Campo | Tipo | Descrizione |
-|---|---|---|
-| `id` | string | ID partita |
-| `date` | string | Data e ora |
-| `fieldLocation` | string | Campo da gioco |
-| `scoreA` / `scoreB` | int | Punteggio squadre |
-| `teamA` / `teamB` | string | Giocatori delle squadre |
-| `mvp` | string | MVP della partita |
-| `hustlePlayer` | string | Giocatore più combattivo |
-| `bestGoalPlayer` | string | Autore del gol più bello |
-
----
-
-## 🚀 Installazione
-
-### Requisiti
+## Requisiti
 
 - Python 3.9+
 - pip
 
-### Dipendenze
+---
+
+## Installazione
+
+### 1. Clona il repository
+
+```bash
+git clone https://github.com/tuo-utente/generatore-squadre.git
+cd generatore-squadre
+```
+
+### 2. (Opzionale) Crea un ambiente virtuale
+
+```bash
+python -m venv venv
+
+# Linux/macOS
+source venv/bin/activate
+
+# Windows
+venv\Scripts\activate
+```
+
+### 3. Installa le dipendenze
+
+```bash
+pip install -r requirements.txt
+```
+
+Se non hai un `requirements.txt`, installa manualmente:
 
 ```bash
 pip install streamlit pandas numpy scikit-learn
 ```
 
-### Avvio
+---
+
+## Struttura del progetto
+
+```
+generatore-squadre/
+├── app.py              # Applicazione principale Streamlit
+├── players.csv         # Anagrafica giocatori (id, name, role)
+├── stats.csv           # Statistiche giocatori (playerId, avgVote, goals, ...)
+├── requirements.txt    # Dipendenze Python
+└── README.md
+```
+
+---
+
+## Formato dei CSV
+
+### `players.csv`
+
+| Campo | Tipo   | Descrizione              |
+|-------|--------|--------------------------|
+| id    | int    | Identificatore univoco   |
+| name  | string | Nome del giocatore       |
+| role  | string | Ruolo: P, D, C, A        |
+
+```csv
+id,name,role
+1,Marco Rossi,P
+2,Luca Bianchi,D
+```
+
+### `stats.csv`
+
+| Campo     | Tipo  | Descrizione                     |
+|-----------|-------|---------------------------------|
+| playerId  | int   | Riferimento a `players.csv`     |
+| avgVote   | float | Voto medio (es. 6.8)            |
+| goals     | int   | Gol segnati                     |
+| assists   | int   | Assist effettuati               |
+| bestVote  | float | Voto migliore                   |
+| worstVote | float | Voto peggiore                   |
+| games     | int   | Partite giocate                 |
+
+```csv
+playerId,avgVote,goals,assists,bestVote,worstVote,games
+1,6.5,0,1,7.5,5.5,10
+2,7.1,2,3,8.0,6.0,12
+```
+
+---
+
+## Avvio
 
 ```bash
 streamlit run app.py
 ```
 
----
+L'app sarà disponibile nel browser all'indirizzo:
 
-## 🧠 Come funziona
-
-1. **Caricamento dati** — vengono letti `players.csv` e `stats.csv` e uniti tramite `playerId`
-2. **Training del modello** — un `RandomForestRegressor` viene addestrato sui giocatori con almeno una partita giocata, usando come feature `avgVote`, `bestVote`, `worstVote`, `gamesPlayed`, `votesReceived`
-3. **Calcolo aiScore** — ogni giocatore riceve un punteggio di forza predetto dal modello; chi non ha mai giocato riceve il punteggio minimo
-4. **Selezione** — si scelgono i giocatori presenti tramite il multiselect
-5. **Ottimizzazione** — l'algoritmo esplora tutte le combinazioni possibili di divisione e trova quella con la minima differenza di forza tra le due squadre, con una penalità aggiuntiva se una squadra manca di ruoli fondamentali (D, C, A)
+```
+http://localhost:8501
+```
 
 ---
 
-## 🎮 Utilizzo
+## Come funziona
 
-1. Avvia l'app con `streamlit run app.py`
-2. Seleziona i giocatori presenti dal menu a tendina
-3. Clicca **⚽ Genera Squadre**
-4. Visualizza le due squadre con forza totale e differenza di equilibrio
-
----
-
-## ⚙️ Ruoli supportati
-
-| Codice | Ruolo |
-|---|---|
-| `P` | Portiere |
-| `D` | Difensore |
-| `C` | Centrocampista |
-| `A` | Attaccante |
+1. **Carica i dati** — legge `players.csv` e `stats.csv` e li unisce tramite `playerId`.
+2. **Allena il modello** — addestra un Random Forest (200 alberi) sulle statistiche per calcolare un `aiScore` per ogni giocatore.
+3. **Selezione giocatori** — scegli i giocatori disponibili per la partita tramite il multiselect.
+4. **Bilanciamento squadre** — l'algoritmo testa tutte le combinazioni possibili e minimizza la differenza di forza tra le due squadre, applicando una penalità se mancano ruoli fondamentali (D, C, A).
+5. **Risultati** — vengono mostrate le due squadre con il punteggio AI di ogni giocatore e il totale.
 
 ---
 
-## 📌 Note
+## Generare `requirements.txt`
 
-- Il modello viene ricalcolato solo al primo avvio grazie a `@st.cache_resource`
-- Con molti giocatori (es. 20+) il calcolo delle combinazioni può richiedere qualche secondo
-- I giocatori con `gamesPlayed = 0` sono selezionabili ma ricevono il punteggio minimo
+Se vuoi creare il file delle dipendenze dal tuo ambiente attuale:
+
+```bash
+pip freeze > requirements.txt
+```
+
+Oppure crea un file minimale:
+
+```
+streamlit>=1.30.0
+pandas>=2.0.0
+numpy>=1.24.0
+scikit-learn>=1.3.0
+```
+
+---
+
+## Licenza
+
+MIT
