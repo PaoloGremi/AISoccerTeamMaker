@@ -299,9 +299,9 @@ def page_home():
     with col1:
         st.markdown(
             """
-            <div style="border:1px solid #ddd; border-radius:10px; padding:1.2rem; min-height:150px;">
-                <h4>🎲 Non ho ancora le squadre</h4>
-                <p style="font-size:14px; color:gray;">
+            <div style="border:1px solid #ddd; border-radius:10px; padding:1.2rem; height:160px; display:flex; flex-direction:column; justify-content:center;">
+                <h4 style="margin:0 0 0.5rem 0;">🎲 Non ho ancora le squadre</h4>
+                <p style="font-size:14px; color:gray; margin:0;">
                     Lascia all'AI il compito di bilanciare i giocatori disponibili
                     in due squadre equilibrate per ruolo e punteggio.
                 </p>
@@ -309,16 +309,16 @@ def page_home():
             """,
             unsafe_allow_html=True
         )
-        st.markdown(" ")
+        st.markdown('<div style="margin-top:0.6rem;"></div>', unsafe_allow_html=True)
         if st.button("Genera le squadre", use_container_width=True):
             go_to("genera")
 
     with col2:
         st.markdown(
             """
-            <div style="border:1px solid #ddd; border-radius:10px; padding:1.2rem; min-height:150px;">
-                <h4>🎙️ Ho già scelto le squadre</h4>
-                <p style="font-size:14px; color:gray;">
+            <div style="border:1px solid #ddd; border-radius:10px; padding:1.2rem; height:160px; display:flex; flex-direction:column; justify-content:center;">
+                <h4 style="margin:0 0 0.5rem 0;">🎙️ Ho già scelto le squadre</h4>
+                <p style="font-size:14px; color:gray; margin:0;">
                     Inserisci i giocatori di ogni squadra e ottieni un commento
                     da telecronista per presentare la partita.
                 </p>
@@ -326,8 +326,8 @@ def page_home():
             """,
             unsafe_allow_html=True
         )
-        st.markdown(" ")
-        if st.button("Commenta la partita", use_container_width=True):
+        st.markdown('<div style="margin-top:0.6rem;"></div>', unsafe_allow_html=True)
+        if st.button("Genera commento Pre-Partita", use_container_width=True):
             go_to("telecronaca")
 
 
