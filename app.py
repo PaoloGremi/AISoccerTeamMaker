@@ -108,7 +108,8 @@ vc_agg = vc.groupby("playerId").agg(
     avgVoteVC    = ("vote",      "mean"),
     sentimentAvg = ("sentiment", "mean"),
     commentCount = ("vote",      "count"),
-    voteStd      = ("vote",      "std")
+    voteStd      = ("vote",      "std"),
+    goalsFromVC  = ("goals",     "sum")
 ).reset_index()
 vc_agg["voteStd"] = vc_agg["voteStd"].fillna(0)
 
@@ -117,6 +118,13 @@ df_full["avgVoteVC"]    = df_full["avgVoteVC"].fillna(df_full["avgVote"])
 df_full["sentimentAvg"] = df_full["sentimentAvg"].fillna(0)
 df_full["commentCount"] = df_full["commentCount"].fillna(0)
 df_full["voteStd"]      = df_full["voteStd"].fillna(0)
+df_full["goalsFromVC"]  = df_full["goalsFromVC"].fillna(0)
+
+# Usa totalGoals da stats come fonte principale; fallback ai goal sommati da vc
+df_full["totalGoals"] = df_full["totalGoals"].fillna(df_full["goalsFromVC"])
+df_full["goalsPerGame"] = (
+    df_full["totalGoals"] / df_full["gamesPlayed"].replace(0, np.nan)
+).fillna(0)
 
 # Ultimi 3 commenti per giocatore (calcolato una volta sola)
 last_comments = (
@@ -137,7 +145,8 @@ last_comments = (
 FEATURES = [
     "avgVote", "bestVote", "worstVote", "gamesPlayed", "votesReceived",
     "avgVoteVC", "sentimentAvg", "commentCount", "voteStd",
-    "wins", "draws", "losses", "mvpCount", "hustleCount", "bestGoalCount", "winRate"
+    "wins", "draws", "losses", "mvpCount", "hustleCount", "bestGoalCount", "winRate",
+    "totalGoals", "goalsPerGame"
 ]
 
 @st.cache_resource
@@ -183,10 +192,14 @@ def render_team(team, score):
         mvp_tag      = " 🏆" * int(p.get("mvpCount", 0))
         hustle_tag   = " 💪" * int(p.get("hustleCount", 0))
         bestgoal_tag = " ⚽" * int(p.get("bestGoalCount", 0))
+        total_goals  = int(p.get("totalGoals", 0))
+        goals_per_game = p.get("goalsPerGame", 0)
+        goals_str = f" · {total_goals} gol ({goals_per_game:.2f}/partita)" if total_goals > 0 else ""
         st.write(
             f"• **{p['displayName']}** ({p.get('role','?')}) — "
             f"media {p.get('avgVoteVC', p.get('avgVote',0)):.2f} · "
             f"{int(p.get('wins',0))}V {int(p.get('draws',0))}P {int(p.get('losses',0))}S"
+            f"{goals_str}"
             f"{sentiment_label}{mvp_tag}{hustle_tag}{bestgoal_tag}"
         )
     st.metric("Forza totale", round(score, 2))
@@ -208,6 +221,7 @@ def format_team_for_prompt(team, score):
             f"{int(p.get('wins',0))}V/{int(p.get('draws',0))}P/{int(p.get('losses',0))}S, "
             f"MVP {int(p.get('mvpCount',0))}x, hustle award {int(p.get('hustleCount',0))}x, "
             f"miglior gol {int(p.get('bestGoalCount',0))}x, "
+            f"gol totali {int(p.get('totalGoals',0))} ({p.get('goalsPerGame',0):.2f}/partita), "
             f"sentiment {'positivo' if p.get('sentimentAvg',0) > 0 else 'negativo' if p.get('sentimentAvg',0) < 0 else 'neutro'}"
             f"{comments_text}"
         )
@@ -246,12 +260,13 @@ Ti vengono fornite due squadre generate automaticamente da un algoritmo di bilan
 Per ogni giocatore ricevi:
 nome, ruolo (A=attaccante, C=centrocampista, D=difensore, P=portiere),
 media voti, record vittorie/pareggi/sconfitte, premi MVP e Hustle,
-sentiment dei commenti storici, ultimi commenti reali ricevuti.
+gol totali e media gol a partita, sentiment dei commenti storici, ultimi commenti reali ricevuti.
 
 Scrivi una descrizione in italiano, tono informale e divertente, composta da 4-6 frasi:
-- Spiega perché le squadre sono bilanciate citando dati reali (medie, MVP, record).
+- Spiega perché le squadre sono bilanciate citando dati reali (medie, MVP, record, gol).
 - Cita almeno un dettaglio concreto dai commenti o dal record storico di un giocatore.
-- Metti in evidenza i giocatori di punta di ciascuna squadra.
+- Metti in evidenza i giocatori di punta di ciascuna squadra, inclusi i realizzatori più prolifici.
+- Se un giocatore ha una media gol elevata, sottolinealo come fattore di pericolosità offensiva.
 - Non inventare statistiche non presenti nei dati.
 - Stile leggero, ironico, da telecronaca amatoriale.
 
@@ -270,8 +285,9 @@ Stai per commentare una partita di calcetto tra amici.
 Scrivi un commento di presentazione in stile telecronaca:
 - Incipit entusiasmante che presenti la sfida.
 - Presenta la Squadra 1 con una breve frase personale per ogni giocatore,
-  basandoti sui dati reali (media voti, record, MVP, commenti storici).
+  basandoti sui dati reali (media voti, record, MVP, gol, commenti storici).
 - Presenta la Squadra 2 allo stesso modo.
+- Se un giocatore è un realizzatore prolifico (alta media gol), segnalalo come minaccia offensiva.
 - Chiudi con una previsione sul match e un incitamento ai tifosi.
 
 Tono: appassionato, divertente, enfatico come i grandi telecronisti italiani.
@@ -371,7 +387,7 @@ def page_genera():
             st.header("🔵 Squadra Colorata")
             render_team(best["team2"], best["score2"])
 
-        diff_display = round(best["diff"], 2)
+        diff_display = round(abs(best["score1"] - best["score2"]), 2)
         if diff_display < 1:
             st.success(f"✅ Squadre molto equilibrate! Differenza: {diff_display}")
         else:
