@@ -270,10 +270,10 @@ Scrivi una descrizione in italiano, tono informale e divertente, composta da 4-6
 - Non inventare statistiche non presenti nei dati.
 - Stile leggero, ironico, da telecronaca amatoriale.
 
-SQUADRA BIANCA (⚪):
+SQUADRA BIANCA:
 {format_team_for_prompt(team1, score1)}
 
-SQUADRA COLORATA (🔵):
+SQUADRA COLORATA:
 {format_team_for_prompt(team2, score2)}
 
 Differenza di forza tra le squadre: {diff_display}
@@ -286,7 +286,7 @@ Scrivi un commento di presentazione in stile telecronaca:
 - Incipit entusiasmante che presenti la sfida.
 - Presenta la Squadra 1 con una breve frase personale per ogni giocatore,
   basandoti sui dati reali (media voti, record, MVP, gol, commenti storici).
-- Presenta la Squadra 2 allo stesso modo.
+- Presenta la Squadra 2 con una breve frase personale per ogni giocatore.
 - Se un giocatore è un realizzatore prolifico (alta media gol), segnalalo come minaccia offensiva.
 - Chiudi con una previsione sul match e un incitamento ai tifosi.
 
