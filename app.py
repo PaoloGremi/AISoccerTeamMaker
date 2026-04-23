@@ -233,7 +233,7 @@ def call_ollama(prompt):
     try:
         response = requests.post(
             "http://localhost:11434/api/generate",
-            json={"model": "mistral-nemo", "prompt": prompt, "stream": True},
+            json={"model": "gemma2:9b-instruct-q6_K", "prompt": prompt, "stream": True},
             stream=True,
             timeout=900
         )
@@ -262,12 +262,12 @@ nome, ruolo (A=attaccante, C=centrocampista, D=difensore, P=portiere),
 media voti, record vittorie/pareggi/sconfitte, premi MVP e Hustle,
 gol totali e media gol a partita, sentiment dei commenti storici, ultimi commenti reali ricevuti.
 
-Scrivi una descrizione in italiano, tono informale e divertente, composta da 4-6 frasi:
+Scrivi una descrizione in italiano, tono informale e divertente:
 - Spiega perché le squadre sono bilanciate citando dati reali (medie, MVP, record, gol).
-- Cita almeno un dettaglio concreto dai commenti o dal record storico di un giocatore.
+- Cita almeno un dettaglio concreto dai commenti o dal record storico per ogni giocatore.
 - Metti in evidenza i giocatori di punta di ciascuna squadra, inclusi i realizzatori più prolifici.
 - Se un giocatore ha una media gol elevata, sottolinealo come fattore di pericolosità offensiva.
-- Non inventare statistiche non presenti nei dati.
+- Non inventare statistiche, usa solo i dati reali forniti.
 - Stile leggero, ironico, da telecronaca amatoriale.
 
 SQUADRA BIANCA:
@@ -291,12 +291,12 @@ Scrivi un commento di presentazione in stile telecronaca:
 - Chiudi con una previsione sul match e un incitamento ai tifosi.
 
 Tono: appassionato, divertente, enfatico come i grandi telecronisti italiani.
-Lunghezza: circa 250-300 parole. Non inventare statistiche non presenti nei dati.
+Non inventare statistiche non presenti nei dati.
 
-SQUADRA 1:
+SQUADRA BIANCA:
 {format_team_for_prompt(team1, sum(p["aiScore"] for p in team1))}
 
-SQUADRA 2:
+SQUADRA COLORATA:
 {format_team_for_prompt(team2, sum(p["aiScore"] for p in team2))}
 
 Inizia subito con la telecronaca, senza premesse."""
