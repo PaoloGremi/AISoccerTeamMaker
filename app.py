@@ -235,7 +235,7 @@ def call_ollama(prompt):
             "http://localhost:11434/api/generate",
             json={"model": "mistral-nemo", "prompt": prompt, "stream": True},
             stream=True,
-            timeout=300
+            timeout=900
         )
         response.raise_for_status()
         narrative = ""
